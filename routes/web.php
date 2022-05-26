@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +27,16 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 Route::middleware('auth')->group(function () {
     Route::resource('category', CategoryController::class);
+    Route::resource('company', CompanyController::class);
+});
+Route::get('send-mail', function () {
+   
+    $details = [
+        'title' => 'Mail from ItSolutionStuff.com',
+        'body' => 'This is for testing email using smtp'
+    ];
+   
+    \Mail::to('ziaurrahaman7info@gmail.com')->send(new \App\Mail\MyTestMail($details));
+   
+    dd("Email is Sent.");
 });

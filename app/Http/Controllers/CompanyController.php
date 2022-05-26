@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -13,7 +14,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+       $companies = Company::all();
+       return view('admin.company.index', compact('companies'));
     }
 
     /**
@@ -23,7 +25,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.company.create');
     }
 
     /**
@@ -34,7 +36,37 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'=>'required',
+            'logo'=>'nullable',
+            'banar'=>'nullable',
+            'overview'=>'string|nullable',
+            'overviewImage'=>'nullable',
+            'phone'=>'required|max:11|min:11',
+            'email'=>'required|email',
+            'address'=>'required'
+        ]);
+        // $request['logo'] = $request->file('logo')->store('uploads');
+        // $request['banar'] = $request->file('banar')->store('uploads');
+        // $request['overviewImage'] = $request->file('overviewImage')->store('uploads');
+        // Company::create($request);
+        // return redirect('company')->with('success', 'successfully added');
+        $logo = $request->file('logo')->store('uploads');
+        $banar = $request->file('banar')->store('uploads');
+        $overviewImage = $request->file('overviewImage')->store('uploads');
+
+        $data = [
+        'name' => $request->name,
+        'logo' => $logo,
+        'banar' => $banar,
+        'overviewImage' => $overviewImage,
+        'phone'=>$request->phone,
+        'email'=>$request->email,
+        'address'=>$request->address,
+        'overview'=>$request->overview,
+        ];
+        Company::create($data);
+        return redirect('company')->with('success', 'successfully added');
     }
 
     /**
@@ -54,9 +86,9 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Company $company)
     {
-        //
+      return view('admin.company.edit', ['company'=>$company]);
     }
 
     /**
@@ -66,9 +98,39 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Company $company)
     {
-        //
+        $request->validate([
+            'name'=>'required',
+            'logo'=>'nullable',
+            'banar'=>'nullable',
+            'overview'=>'string|nullable',
+            'overviewImage'=>'nullable',
+            'phone'=>'required|max:11|min:11',
+            'email'=>'required|email',
+            'address'=>'required'
+        ]);
+        if(isset($request->logo)){
+            $logo = $request->file('logo')->store('uploads');
+            }
+        if(isset($request->banar)){
+            $banar = $request->file('banar')->store('uploads');
+            }
+        if(isset($request->overviewImage)){
+            $overviewImage = $request->file('overviewImage')->store('uploads');
+            }
+        $data = [
+        'name' => $request->name,
+        'logo' => $logo,
+        'banar' => $banar,
+        'overviewImage' => $overviewImage,
+        'phone'=>$request->phone,
+        'email'=>$request->email,
+        'address'=>$request->address,
+        'overview'=>$request->overview,
+        ];
+        $company->update($data);
+        return redirect('company')->with('success', 'successfully edit');
     }
 
     /**

@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('logo');
-            $table->string('banar');
-            $table->text('overview');
-            $table->string('overviewImage');
+            $table->string('logo')->nullable();
+            $table->string('banar')->nullable();
+            $table->text('overview')->nullable();
+            $table->string('overviewImage')->nullable();
             $table->string('phone');
             $table->string('email');
             $table->text('address');
