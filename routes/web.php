@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NewsEventController;
 use App\Http\Controllers\ProductCntroller;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SiteSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('category', CategoryController::class);
     Route::resource('company', CompanyController::class);
     Route::resource('product', ProductController::class);
+    Route::resource('sitesetting', SiteSettingController::class);
+    Route::resource('news', NewsEventController::class);
 });
 Route::get('send-mail', function () {
    
